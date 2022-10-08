@@ -9,8 +9,8 @@ using namespace cv;
     Mat Pointlabel(src.rows,src.cols, CV_8UC1,Scalar::all(255) );  
     
  
-     auto *srcstart=src.data;
-	 auto *plstart=Pointlabel.data;
+     auto* __restrict srcstart=src.data;
+	 auto* __restrict plstart=Pointlabel.data;
 	 int srcrows=src.rows;
 	 int srccols=src.cols;
  
