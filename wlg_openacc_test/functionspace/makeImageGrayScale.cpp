@@ -19,7 +19,8 @@ Mat WatershedAlg::makeImageGrayScale(Mat image) {
 			
             }
         }
-        #pragma acc exit data copyout(startImg1[:3*imgrows1*imgcols1],startgrayScale[:imgrows1*imgcols1])
+        #pragma acc update self(startgrayScale[:imgrows1*imgcols1])
+	#pragma acc exit data delete(startImg1[:3*imgrows1*imgcols1],startgrayScale[:imgrows1*imgcols1])
        
         cv::GaussianBlur(grayScale, grayScale, Size(3,5), 3,4);
 
