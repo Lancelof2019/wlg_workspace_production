@@ -16,7 +16,10 @@ Mat WatershedAlg::antiInverseImage(Mat image) {
 				      startImg[i]=ONE;
 				  }
 		  }
-	#pragma acc exit data copyout(startImg[:imgrows*imgcols])
+
+        #pragma acc update self(startImg[:imgrows*imgcols])
+	#pragma acc exit data delete(startImg[:imgrows*imgcols])
+        //#pragma acc exit data copyout(startImg[:imgrows*imgcols])
 
         return image;
     }
