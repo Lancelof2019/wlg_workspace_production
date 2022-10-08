@@ -58,7 +58,7 @@ Mat WatershedAlg::erosion(Mat image, vector< vector <int> > kernel) {
                 }
             }
          }
-             #pragma acc update device(dillstart[:drows*dcols])
+             #pragma acc update self(dillstart[:drows*dcols])
 	     #pragma acc exit data delete(dillstart[:drows*dcols],shouldBeZeroImage[:drows][:dcols],kernel[:n][:m])
     return dill;
 
