@@ -13,7 +13,7 @@ Mat WatershedAlg::erosion(Mat image, vector< vector <int> > kernel) {
 
     dilate(image, dill, element,Point(-1, -1), 1);
     int drows=dill.rows;
-	int dcols=dill.cols;
+    int dcols=dill.cols;
     int n = kernel.size();
     int m = kernel[0].size();
     image.release();
@@ -42,10 +42,10 @@ Mat WatershedAlg::erosion(Mat image, vector< vector <int> > kernel) {
                 }//if
             }//for
          }//for
-	  #pragma acc exit data copyout(dillstart[:drows*dcols],shouldBeZeroImage[:drows][:dcols],kernel[:n][:m])
+	 // #pragma acc exit data copyout(dillstart[:drows*dcols],shouldBeZeroImage[:drows][:dcols],kernel[:n][:m])
 	
 	
-	     #pragma acc enter data copyin(dillstart[:drows*dcols],shouldBeZeroImage[:drows][:dcols])
+	     //#pragma acc enter data copyin(dillstart[:drows*dcols],shouldBeZeroImage[:drows][:dcols])
 	     #pragma acc parallel loop collapse(2) default(present) 
 	     for(int i = 0; i < drows; i++) {
                for(int j = 0; j < dcols; j++) {
@@ -58,7 +58,8 @@ Mat WatershedAlg::erosion(Mat image, vector< vector <int> > kernel) {
                 }
             }
          }
-
+             #pragma acc update device(dillstart[:drows*dcols])
+	     #pragma acc exit data delete(dillstart[:drows*dcols],shouldBeZeroImage[:drows][:dcols],kernel[:n][:m])
     return dill;
 
     }
