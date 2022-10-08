@@ -23,7 +23,9 @@ using namespace cv;
 			}
 			
 		}
-	#pragma acc exit data copyout(srcstart[:srcrows*srccols],plstart[:srcrows*srccols])
+	 
+	#pragma acc update self(srcstart[:srcrows*srccols],plstart[:srcrows*srccols])
+	//#pragma acc exit data copyout(srcstart[:srcrows*srccols],plstart[:srcrows*srccols])
 	 
     vector<vector<Point>> contours;  
     vector<cv::Vec4i> hierarchy; 
@@ -52,7 +54,7 @@ using namespace cv;
 			if (area < pnumThrshold) 
 			{
 				
-				#pragma acc enter data copyin(srcstart[:srcrows*srccols],pixelThreshold,plstart[:srcrows*srccols])
+				//#pragma acc enter data copyin(srcstart[:srcrows*srccols],pixelThreshold,plstart[:srcrows*srccols])
 				#pragma acc parallel loop collapse(2) default(present)
 				for (int i = countoury; i < countourybd; i++) 
 				{
@@ -67,7 +69,10 @@ using namespace cv;
 						
 					}
 				}
-				#pragma acc exit data copyout(srcstart[:srcrows*srccols],plstart[:srcrows*srccols])
+				
+				#pragma acc update self(srcstart[:srcrows*srccols],plstart[:srcrows*srccols])
+				#pragma acc exit data delete(srcstart[:srcrows*srccols],plstart[:srcrows*srccols])
+				//#pragma acc exit data copyout(srcstart[:srcrows*srccols],plstart[:srcrows*srccols])
 				
 	
 			}//if
