@@ -3,8 +3,8 @@ using namespace cv;
 
 Mat WatershedAlg::makeImageGrayScale(Mat image) {
        Mat grayScale(image.rows, image.cols, CV_8UC1, Scalar::all(0));
-        auto *startImg1=image.data;
-	auto *startgrayScale=grayScale.data;
+        auto* __restrict startImg1=image.data;
+	auto* __restrict startgrayScale=grayScale.data;
 	int imgrows1=image.rows;
 	int imgcols1=image.cols;
 	#pragma acc enter data copyin(startImg1[:3*imgrows1*imgcols1],startgrayScale[:imgrows1*imgcols1])
